@@ -1,4 +1,5 @@
 using LastFilm_Web_App.Data;
+using LastFilm_Web_App.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
 });
+
+// Add Services
+builder.Services.AddScoped<IActorsService, ActorsService>();
 
 var app = builder.Build();
 
