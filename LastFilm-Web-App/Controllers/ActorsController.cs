@@ -16,6 +16,6 @@ public class ActorsController : Controller
     public async Task<IActionResult> Index()
     {
         var actors = await _context.Actors.ToListAsync();
-        return View();
+        return View(actors);
     }
 }
