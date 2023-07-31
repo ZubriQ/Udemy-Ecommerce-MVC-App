@@ -4,6 +4,11 @@ namespace LastFilm_Web_App.Models;
 
 public class Actor
 {
+    public Actor()
+    {
+        ActorsMovies = new HashSet<ActorMovie>();
+    }
+
     [Key]
     public int Id { get; set; }
 

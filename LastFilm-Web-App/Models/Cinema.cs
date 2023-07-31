@@ -4,6 +4,11 @@ namespace LastFilm_Web_App.Models;
 
 public class Cinema
 {
+    public Cinema()
+    {
+        Movies = new HashSet<Movie>();
+    }
+
     [Key]
     public int Id { get; set; }
     public string Logo { get; set; } = string.Empty;

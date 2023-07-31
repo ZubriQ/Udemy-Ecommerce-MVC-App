@@ -4,6 +4,11 @@ namespace LastFilm_Web_App.Models;
 
 public class Producer
 {
+    public Producer()
+    {
+        Movies = new HashSet<Movie>();
+    }
+
     [Key]
     public int Id { get; set; }
     public string ProfilePictureURL { get; set; } = string.Empty;
