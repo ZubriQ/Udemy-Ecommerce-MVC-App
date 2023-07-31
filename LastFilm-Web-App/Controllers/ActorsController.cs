@@ -17,4 +17,10 @@ public class ActorsController : Controller
         var actors = await _service.GetAllAsync();
         return View(actors);
     }
+
+    // Get: Actors/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
 }
