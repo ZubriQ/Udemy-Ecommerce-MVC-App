@@ -1,22 +1,21 @@
 ﻿using LastFilm_Web_App.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace LastFilm_Web_App.Controllers
+namespace LastFilm_Web_App.Controllers;
+
+public class ActorsController : Controller
 {
-    public class ActorsController : Controller
+    private readonly AppDbContext _context;
+
+    public ActorsController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public ActorsController(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult Index()
-        {
-            var actors = _context.Actors.ToList();
-            return View(actors);
-            //return View();
-        }
+    public async Task<IActionResult> Index()
+    {
+        var actors = await _context.Actors.ToListAsync();
+        return View();
     }
 }
