@@ -15,8 +15,11 @@ namespace LastFilm_Web_App.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var movies = await _context.Movies.ToListAsync();
-            return View();
+            var movies = await _context.Movies
+                .Include(c => c.Cinema)
+                .ToListAsync();
+
+            return View(movies);
         }
     }
 }
