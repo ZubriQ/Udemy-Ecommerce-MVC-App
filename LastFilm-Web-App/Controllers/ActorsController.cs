@@ -42,7 +42,7 @@ public class ActorsController : Controller
     {
         if (await _service.GetByIdAsync(id) is not Actor actor)
         {
-            return View("Empty");
+            return View("NotFound");
         }
         return View(actor);
     }
