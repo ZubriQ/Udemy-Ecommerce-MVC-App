@@ -48,4 +48,29 @@ public class ActorsController : Controller
         }
         return View(actor);
     }
+
+
+    // Get: Actors/Edit
+    public async Task<IActionResult> Edit(int id)
+    {
+        var actor = await _service.GetByIdAsync(id);
+
+        if (actor is null)
+        {
+            return View("NotFound");
+        }
+        return View(actor);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, [Bind("Id,ProfilePictureURL,FullName,Bio")] Actor actor)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(actor);
+        }
+
+        await _service.UpdateAsync(id, actor);
+        return RedirectToAction(nameof(Index));
+    }
 }
