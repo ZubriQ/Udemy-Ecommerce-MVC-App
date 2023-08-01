@@ -1,4 +1,5 @@
 ﻿using LastFilm_Web_App.Data.Services;
+using LastFilm_Web_App.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LastFilm_Web_App.Controllers;
@@ -22,5 +23,17 @@ public class ActorsController : Controller
     public IActionResult Create()
     {
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([Bind("ProfilePictureURL,FullName,Bio")]Actor actor)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(actor);
+        }
+
+        _service.Add(actor);
+        return RedirectToAction(nameof(Index));
     }
 }
