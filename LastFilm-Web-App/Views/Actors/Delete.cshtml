@@ -1,0 +1,52 @@
+﻿@model Actor
+
+@{
+    ViewData["Title"] = "Delete actor";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-md-2">
+        <h1>Delete confimation @Model.FullName</h1>
+
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="mb-3 text-center">
+                    <img class="border-info rounded-circle" style="max-width: 150px; max-height: 150px;" id="ProfilePicturePreview" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ProfilePictureURL" class="form-label"></label>
+                    <input asp-for="ProfilePictureURL" class="form-control" readonly />
+                    <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control" readonly />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Bio" class="form-label"></label>
+                    <input asp-for="Bio" class="form-control" readonly />
+                    <span asp-validation-for="Bio" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="submit" value="Confirm" class="btn btn-danger float-right" />
+                    </form>
+                    <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $("#ProfilePictureURL").val();
+        })
+    </script>
+}
