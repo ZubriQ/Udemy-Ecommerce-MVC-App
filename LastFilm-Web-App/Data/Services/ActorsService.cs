@@ -12,10 +12,10 @@ public class ActorsService : IActorsService
         _context = context;
     }
 
-    public void Add(Actor actor)
+    public async Task AddAsync(Actor actor)
     {
-        _context.Add(actor);
-        _context.SaveChanges();
+        await _context.AddAsync(actor);
+        await _context.SaveChangesAsync();
     }
 
     public void Delete(int id)
@@ -29,9 +29,9 @@ public class ActorsService : IActorsService
         return actors;
     }
 
-    public Actor GetById(int id)
+    public async Task<Actor> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _context.Actors.FindAsync(id);
     }
 
     public Actor Update(int id, Actor newActor)

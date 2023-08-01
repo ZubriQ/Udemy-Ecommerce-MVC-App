@@ -33,7 +33,19 @@ public class ActorsController : Controller
             return View(actor);
         }
 
-        _service.Add(actor);
+        _service.AddAsync(actor);
         return RedirectToAction(nameof(Index));
+    }
+
+    // Get: Actors/Details/1
+    public async Task<IActionResult> Details(int id)
+    {
+        var actor = await _service.GetByIdAsync(id);
+
+        if (actor is null)
+        {
+            return View("Empty");
+        }
+        return View(actor);
     }
 }
