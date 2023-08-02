@@ -1,21 +1,20 @@
-﻿using LastFilm_Web_App.Data;
+﻿using LastFilm_Web_App.Data.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LastFilm_Web_App.Controllers;
 
 public class ProducersController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IProducersService _service;
 
-    public ProducersController(AppDbContext context)
+    public ProducersController(IProducersService service)
     {
-        _context = context;
+        _service = service;
     }
 
     public async Task<IActionResult> Index()
     {
-        var producers = await _context.Producers.ToListAsync();
+        var producers = await _service.GetAllAsync();
         return View(producers);
     }
 }

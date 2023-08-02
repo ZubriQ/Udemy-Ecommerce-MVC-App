@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LastFilm_Web_App.Data.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace LastFilm_Web_App.Models;
 
-public class Producer
+public class Producer : IEntityBase
 {
     public Producer()
     {
