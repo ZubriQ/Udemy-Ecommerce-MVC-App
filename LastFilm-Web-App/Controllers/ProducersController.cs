@@ -75,4 +75,27 @@ public class ProducersController : Controller
 
         return View(producer);
     }
+
+    // GET: producers/delete/1
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (await _service.GetByIdAsync(id) is Producer producer)
+        {
+            return View(producer);
+        }
+
+        return View("NotFound");
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        if (await _service.GetByIdAsync(id) is not Producer producer)
+        {
+            return View("NotFound");
+        }
+
+        await _service.DeleteByIdAsync(id);
+        return RedirectToAction(nameof(Index));
+    }
 }
