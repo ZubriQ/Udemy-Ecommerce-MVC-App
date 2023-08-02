@@ -10,7 +10,7 @@
         <div class="col-md-4 col-xs-6 border-primary mb-3">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
-                    <div class="col-md-12">
+                    <div class="col-md-12 text-center">
                         <div class="card-header text-white bg-info">
                             <p class="card-text">
                                 <h5 class="card-title">
@@ -51,20 +51,21 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="card-footer ">
-                            <p class="card-text">
-                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@movie.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
-                                </a>
-                                <a class="btn btn-success text-white @((DateTime.Now > movie.EndDate) ? "disabled" : "")"
+                        <div class="card-footer">
+                            <p class="card-text d-flex justify-content-between">
+                                <a class="btn btn-success text-white me-3 @((DateTime.Now > movie.EndDate) ? "disabled" : "")"
                                    asp-controller="Orders"
                                    asp-action="AddItemToShoppingCart"
                                    asp-route-id="@movie.Id">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @movie.Price.ToString("c"))
+                                    <i class="bi bi-cart-plus"></i> Add (Price: @movie.Price.ToString("c")) 
+                                </a>
+                                <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@movie.Id">
+                                    <i class="bi bi-eye-fill"></i> Details
                                 </a>
                             </p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
