@@ -1,12 +1,8 @@
-﻿using LastFilm_Web_App.Models;
+﻿using LastFilm_Web_App.Data.Base;
+using LastFilm_Web_App.Models;
 
 namespace LastFilm_Web_App.Data.Services;
 
-public interface IActorsService
+public interface IActorsService : IEntityBaseRepository<Actor>
 {
-    Task<IEnumerable<Actor>> GetAllAsync();
-    Task<Actor> GetByIdAsync(int id);
-    Task AddAsync(Actor actor);
-    Task<Actor> UpdateAsync(int id, Actor newActor);
-    Task DeleteAsync(int id);
 }

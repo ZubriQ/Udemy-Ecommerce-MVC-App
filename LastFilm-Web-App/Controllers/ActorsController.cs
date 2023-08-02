@@ -66,7 +66,7 @@ public class ActorsController : Controller
             return View(actor);
         }
 
-        await _service.UpdateAsync(id, actor);
+        await _service.UpdateByIdAsync(id, actor);
         return RedirectToAction(nameof(Index));
     }
 
@@ -88,7 +88,7 @@ public class ActorsController : Controller
             return View("NotFound");
         }
 
-        await _service.DeleteAsync(id);
+        await _service.DeleteByIdAsync(id);
         return RedirectToAction(nameof(Index));
     }
 }

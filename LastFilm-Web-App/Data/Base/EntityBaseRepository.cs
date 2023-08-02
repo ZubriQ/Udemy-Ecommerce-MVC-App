@@ -1,29 +1,41 @@
-﻿namespace LastFilm_Web_App.Data.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace LastFilm_Web_App.Data.Base;
 
 public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class, IEntityBase, new()
 {
-    public Task AddAsync(T entity)
+    private readonly AppDbContext _context;
+
+    public EntityBaseRepository(AppDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task DeleteAsync(int id)
+    public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
+
+    public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
+
+    public async Task AddAsync(T entity)
     {
-        throw new NotImplementedException();
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<T>> GetAllAsync()
+    public async Task DeleteByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        T? entity = await _context.Set<T>().FindAsync(id);
+        EntityEntry entry = _context.Entry(entity);
+        entry.State = EntityState.Deleted;
+
+        await _context.SaveChangesAsync();
     }
 
-    public Task<T> GetByIdAsync(int id)
+    public async Task UpdateByIdAsync(int id, T newEntity)
     {
-        throw new NotImplementedException();
-    }
+        EntityEntry entry = _context.Entry(newEntity);
+        entry.State = EntityState.Modified;
 
-    public Task<T> UpdateAsync(int id, T newEntity)
-    {
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
     }
 }
