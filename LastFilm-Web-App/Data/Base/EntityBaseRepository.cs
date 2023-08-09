@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq.Expressions;
 
 namespace LastFilm_Web_App.Data.Base;
 
@@ -37,5 +38,12 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
         entry.State = EntityState.Modified;
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] expressions)
+    {
+        IQueryable<T> query = _context.Set<T>();
+        query = expressions.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        return await query.ToListAsync();
     }
 }

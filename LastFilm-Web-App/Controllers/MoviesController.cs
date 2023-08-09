@@ -1,4 +1,5 @@
 ﻿using LastFilm_Web_App.Data;
+using LastFilm_Web_App.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,19 +7,16 @@ namespace LastFilm_Web_App.Controllers;
 
 public class MoviesController : Controller
 {
-    private readonly AppDbContext _context;
+    private readonly IMoviesService _service;
 
-    public MoviesController(AppDbContext context)
+    public MoviesController(IMoviesService service)
     {
-        _context = context;
+        _service = service;
     }
 
     public async Task<IActionResult> Index()
     {
-        var movies = await _context.Movies
-            .Include(c => c.Cinema)
-            .ToListAsync();
-
+        var movies = await _service.GetAllAsync(n => n.Cinema);
         return View(movies);
     }
 }
