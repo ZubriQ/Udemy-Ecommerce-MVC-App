@@ -36,4 +36,15 @@ public class CinemasController : Controller
         await _service.AddAsync(cinema);
         return RedirectToAction("Index");
     }
+
+    // GET: cinemas/details/1
+    public async Task<IActionResult> Details(int id)
+    {
+        if (await _service.GetByIdAsync(id) is not Cinema cinema)
+        {
+            return View("NotFound");
+        }
+
+        return View(cinema);
+    }
 }
