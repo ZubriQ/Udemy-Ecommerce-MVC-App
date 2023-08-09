@@ -19,7 +19,7 @@ public class ActorsController : Controller
         return View(actors);
     }
 
-    // Get: Actors/Create
+    // GET: actors/create
     public IActionResult Create()
     {
         return View();
@@ -37,7 +37,7 @@ public class ActorsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // Get: Actors/Details/1
+    // GET: actors/details/1
     public async Task<IActionResult> Details(int id)
     {
         if (await _service.GetByIdAsync(id) is not Actor actor)
@@ -48,7 +48,7 @@ public class ActorsController : Controller
     }
 
 
-    // Get: Actors/Edit/1
+    // GET: actors/edit/1
     public async Task<IActionResult> Edit(int id)
     {
         if (await _service.GetByIdAsync(id) is not Actor actor)
@@ -70,7 +70,7 @@ public class ActorsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // Get: Actors/Delete/1
+    // GET: actors/delete/1
     public async Task<IActionResult> Delete(int id)
     {
         if (await _service.GetByIdAsync(id) is not Actor actor)
