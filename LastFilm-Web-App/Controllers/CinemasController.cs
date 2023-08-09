@@ -70,4 +70,27 @@ public class CinemasController : Controller
         await _service.UpdateByIdAsync(id, cinema);
         return RedirectToAction("Index");
     }
+
+    // GET: cinemas/delete/1
+    public async Task<IActionResult> Delete(int id)
+    {
+        if (await _service.GetByIdAsync(id) is not Cinema cinema)
+        {
+            return View("NotFound");
+        }
+
+        return View(cinema);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirm(int id)
+    {
+        if (await _service.GetByIdAsync(id) is not Cinema cinema)
+        {
+            return View("NotFound");
+        }
+
+        await _service.DeleteByIdAsync(id);
+        return RedirectToAction("Index");
+    }
 }
