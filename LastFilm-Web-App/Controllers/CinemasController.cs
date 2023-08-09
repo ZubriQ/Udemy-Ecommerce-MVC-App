@@ -1,4 +1,5 @@
 ﻿using LastFilm_Web_App.Data.Services;
+using LastFilm_Web_App.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LastFilm_Web_App.Controllers;
@@ -16,5 +17,23 @@ public class CinemasController : Controller
     {
         var cinemas = await _service.GetAllAsync();
         return View(cinemas);
+    }
+
+    // GET: cinemas/create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([Bind("Logo,Name,Description")]Cinema cinema)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(cinema);
+        }
+
+        await _service.AddAsync(cinema);
+        return RedirectToAction("Index");
     }
 }
