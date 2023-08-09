@@ -47,4 +47,27 @@ public class CinemasController : Controller
 
         return View(cinema);
     }
+
+    // GET: cinemas/edit/1
+    public async Task<IActionResult> Edit(int id)
+    {
+        if (await _service.GetByIdAsync(id) is not Cinema cinema)
+        {
+            return View("NotFound");
+        }
+
+        return View(cinema);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, [Bind("Id,Logo,Name,Description")] Cinema cinema)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(cinema);
+        }
+
+        await _service.UpdateByIdAsync(id, cinema);
+        return RedirectToAction("Index");
+    }
 }
