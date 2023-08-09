@@ -2,24 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace LastFilm_Web_App.Controllers
+namespace LastFilm_Web_App.Controllers;
+
+public class MoviesController : Controller
 {
-    public class MoviesController : Controller
+    private readonly AppDbContext _context;
+
+    public MoviesController(AppDbContext context)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+    }
 
-        public MoviesController(AppDbContext context)
-        {
-            _context = context;
-        }
+    public async Task<IActionResult> Index()
+    {
+        var movies = await _context.Movies
+            .Include(c => c.Cinema)
+            .ToListAsync();
 
-        public async Task<IActionResult> Index()
-        {
-            var movies = await _context.Movies
-                .Include(c => c.Cinema)
-                .ToListAsync();
-
-            return View(movies);
-        }
+        return View(movies);
     }
 }

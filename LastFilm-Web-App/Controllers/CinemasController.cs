@@ -1,22 +1,20 @@
-﻿using LastFilm_Web_App.Data;
+﻿using LastFilm_Web_App.Data.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace LastFilm_Web_App.Controllers
+namespace LastFilm_Web_App.Controllers;
+
+public class CinemasController : Controller
 {
-    public class CinemasController : Controller
+    private readonly ICinemasService _service;
+
+    public CinemasController(ICinemasService service)
     {
-        private readonly AppDbContext _context;
+        _service = service;
+    }
 
-        public CinemasController(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var cinemas = await _context.Cinemas.ToListAsync();
-            return View(cinemas);
-        }
+    public async Task<IActionResult> Index()
+    {
+        var cinemas = await _service.GetAllAsync();
+        return View(cinemas);
     }
 }
