@@ -19,4 +19,11 @@ public class MoviesController : Controller
         var movies = await _service.GetAllAsync(n => n.Cinema);
         return View(movies);
     }
+
+    // GET: movies/details/1
+    public async Task<IActionResult> Details(int id)
+    {
+        var movie = await _service.GetMovieByIdAsync(id);
+        return View(movie);
+    }
 }
