@@ -1,4 +1,5 @@
 ﻿using LastFilm_Web_App.Data.Base;
+using LastFilm_Web_App.Data.ViewModels;
 using LastFilm_Web_App.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,5 +24,17 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
             .FirstOrDefaultAsync(m => m.Id == id);
 
         return movie!;
+    }
+
+    public async Task<NewMovieDropdownsVM> GetNewMovieDropdownValues()
+    {
+        var response = new NewMovieDropdownsVM()
+        {
+            Actors = await _context.Actors.OrderBy(a => a.FullName).ToListAsync(),
+            Cinemas = await _context.Cinemas.OrderBy(c => c.Name).ToListAsync(),
+            Producers = await _context.Producers.OrderBy(p => p.FullName).ToListAsync(),
+        };
+
+        return response;
     }
 }
