@@ -26,7 +26,7 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
         return movie!;
     }
 
-    public async Task<NewMovieDropdownsVM> GetNewMovieDropdownValues()
+    public async Task<NewMovieDropdownsVM> GetNewMovieDropdownValuesAsync()
     {
         var response = new NewMovieDropdownsVM()
         {
@@ -36,5 +36,35 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
         };
 
         return response;
+    }
+
+    public async Task AddNewMovieAsync(NewMovieVM data)
+    {
+        var newMovie = new Movie()
+        {
+            Name = data.Name,
+            Description = data.Description,
+            Price = data.Price,
+            ImageURL = data.ImageURL,
+            CinemaId = data.CinemaId,
+            StartDate = data.StartDate,
+            EndDate = data.EndDate,
+            MovieCategory = data.MovieCategory,
+            ProducerId = data.ProducerId,
+        };
+
+        await _context.Movies.AddAsync(newMovie);
+        await _context.SaveChangesAsync();
+
+        foreach (int actorId in data.ActorIds)
+        {
+            var actorMovie = new ActorMovie()
+            {
+                ActorId = actorId,
+                MovieId = newMovie.Id,
+            };
+            await _context.ActorsMovies.AddAsync(actorMovie);
+        }
+        await _context.SaveChangesAsync();
     }
 }

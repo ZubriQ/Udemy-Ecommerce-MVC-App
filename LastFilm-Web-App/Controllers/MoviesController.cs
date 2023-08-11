@@ -1,8 +1,7 @@
-﻿using LastFilm_Web_App.Data;
-using LastFilm_Web_App.Data.Services;
+﻿using LastFilm_Web_App.Data.Services;
+using LastFilm_Web_App.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace LastFilm_Web_App.Controllers;
 
@@ -31,12 +30,30 @@ public class MoviesController : Controller
     // GET: movies/create
     public async Task<IActionResult> Create()
     {
-        var movieDropdowns = await _service.GetNewMovieDropdownValues();
+        var movieDropdowns = await _service.GetNewMovieDropdownValuesAsync();
 
         ViewBag.Cinemas = new SelectList(movieDropdowns.Cinemas, "Id", "Name");
         ViewBag.Producers = new SelectList(movieDropdowns.Producers, "Id", "FullName");
         ViewBag.Actors = new SelectList(movieDropdowns.Actors, "Id", "FullName");
 
         return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(NewMovieVM movie)
+    {
+        if (!ModelState.IsValid)
+        {
+            var movieDropdownsData = await _service.GetNewMovieDropdownValuesAsync();
+
+            ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+            ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
+            ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
+
+            return View(movie);
+        }
+
+        await _service.AddNewMovieAsync(movie);
+        return RedirectToAction(nameof(Index));
     }
 }

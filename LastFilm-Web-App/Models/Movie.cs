@@ -1,7 +1,6 @@
 ﻿using LastFilm_Web_App.Data.Base;
 using LastFilm_Web_App.Data.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LastFilm_Web_App.Models;
 
@@ -29,5 +28,4 @@ public class Movie : IEntityBase
     public Producer Producer { get; set; } = null!;
 
     public ICollection<ActorMovie> ActorsMovies { get; set; }
-
 }

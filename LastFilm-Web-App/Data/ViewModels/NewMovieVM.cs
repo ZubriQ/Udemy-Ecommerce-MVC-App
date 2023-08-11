@@ -43,6 +43,5 @@ public class NewMovieVM
 
     [Display(Name = "Start actor(s)")]
     [Required(ErrorMessage = "Movie actor(s) is required")]
-    public List<int> ActorIds { get; set; }
-
+    public List<int> ActorIds { get; set; } = new List<int>();
 }
