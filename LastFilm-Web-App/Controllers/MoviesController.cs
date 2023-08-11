@@ -26,4 +26,13 @@ public class MoviesController : Controller
         var movie = await _service.GetMovieByIdAsync(id);
         return View(movie);
     }
+
+    // GET: movies/create
+    public IActionResult Create()
+    {
+        ViewData["Welcome"] = "Welcome to our store";
+        ViewBag.Description = "This is the store description";
+
+        return View();
+    }
 }
