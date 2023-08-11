@@ -5,6 +5,8 @@ namespace LastFilm_Web_App.Models;
 
 public class NewMovieVM
 {
+    public int Id { get; set; }
+
     [Display(Name = "Movie name")]
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; } = string.Empty;
@@ -41,7 +43,7 @@ public class NewMovieVM
     [Required(ErrorMessage = "Movie producer is required")]
     public int ProducerId { get; set; }
 
-    [Display(Name = "Start actor(s)")]
+    [Display(Name = "Select actor(s)")]
     [Required(ErrorMessage = "Movie actor(s) is required")]
     public List<int> ActorIds { get; set; } = new List<int>();
 }

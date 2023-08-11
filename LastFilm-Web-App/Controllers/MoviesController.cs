@@ -56,4 +56,59 @@ public class MoviesController : Controller
         await _service.AddNewMovieAsync(movie);
         return RedirectToAction(nameof(Index));
     }
+
+    // GET: movies/edit/1
+    public async Task<IActionResult> Edit(int id)
+    {
+        if (await _service.GetByIdAsync(id) is not Movie movie)
+        {
+            return View("NotFound");
+        }
+
+        var response = new NewMovieVM()
+        {
+            Id = movie.Id,
+            Name = movie.Name,
+            Description = movie.Description,
+            Price = movie.Price,
+            ImageURL = movie.ImageURL,
+            MovieCategory = movie.MovieCategory,
+            CinemaId = movie.CinemaId,
+            ProducerId = movie.ProducerId,
+            EndDate = movie.EndDate,
+            StartDate = movie.StartDate,
+            ActorIds = movie.ActorsMovies.Select(a => a.ActorId).ToList(),
+        };
+
+        var movieDropdownsData = await _service.GetNewMovieDropdownValuesAsync();
+
+        ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+        ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
+        ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
+
+        return View(response);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(int id, NewMovieVM movie)
+    {
+        if (id != movie.Id)
+        {
+            return View("NotFound");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            var movieDropdownsData = await _service.GetNewMovieDropdownValuesAsync();
+
+            ViewBag.Cinemas = new SelectList(movieDropdownsData.Cinemas, "Id", "Name");
+            ViewBag.Producers = new SelectList(movieDropdownsData.Producers, "Id", "FullName");
+            ViewBag.Actors = new SelectList(movieDropdownsData.Actors, "Id", "FullName");
+
+            return View(movie);
+        }
+
+        await _service.UpdateMovieAsync(movie);
+        return RedirectToAction(nameof(Index));
+    }
 }
