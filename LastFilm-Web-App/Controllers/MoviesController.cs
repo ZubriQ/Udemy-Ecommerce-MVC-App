@@ -20,6 +20,22 @@ public class MoviesController : Controller
         return View(movies);
     }
 
+    public async Task<IActionResult> Filter(string searchString)
+    {
+        var movies = await _service.GetAllAsync(n => n.Cinema);
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            var filteredMovies = movies
+                .Where(m => m.Name.Contains(searchString) || m.Description.Contains(searchString))
+                .ToList();
+
+            return View("Index", filteredMovies);
+        }
+
+        return View("Index", movies);
+    }
+
     // GET: movies/details/1
     public async Task<IActionResult> Details(int id)
     {
