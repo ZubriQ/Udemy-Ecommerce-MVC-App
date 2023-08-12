@@ -75,7 +75,7 @@
                         <p class="card-text d-flex justify-content-between">
                             <a class="btn btn-success text-white me-3 @((DateTime.Now > Model.EndDate) ? "disabled" : "")"
                                 asp-controller="Orders"
-                                asp-action="AddItemToShoppingCart"
+                               asp-action="AddItemToShoppingCart"
                                 asp-route-id="@Model.Id">
                                 <i class="bi bi-cart-plus"></i> Add (Price: @Model.Price.ToString("c"))
                             </a>
