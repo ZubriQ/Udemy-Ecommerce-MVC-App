@@ -16,6 +16,16 @@ public class ShoppingCart
         ShoppingCartItems = new List<ShoppingCartItem>();
     }
 
+    public static ShoppingCart GetShoppingCart(IServiceProvider provider)
+    {
+        ISession session = provider.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
+        var context = provider.GetService<AppDbContext>();
+
+        string cartId = session.GetString("CardId") ?? Guid.NewGuid().ToString();
+        session.SetString("CartId", cartId);
+        return new ShoppingCart(context) { ShoppingCartId = cartId };
+    }
+
     public void AddItemToCart(Movie movie)
     {
         var shoppingCartItem = _context.ShoppingCartItems
