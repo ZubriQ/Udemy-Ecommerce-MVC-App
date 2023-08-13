@@ -68,4 +68,10 @@ public class OrdersController : Controller
 
         return View("OrderCompleted");
     }
+
+    public async Task<IActionResult> Index()
+    {
+        var orders = await _ordersService.GetOrdersByUserIdAsync("EmptyForNow");
+        return View(orders);
+    }
 }
