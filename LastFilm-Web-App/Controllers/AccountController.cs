@@ -90,9 +90,11 @@ public class AccountController : Controller
         if (newUserResponse.Succeeded)
         {
             await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+            return View("RegisterCompleted");
         }
 
-        return View("RegisterCompleted");
+        TempData["Error"] = "Wrong credentials. Please, try again.";
+        return View(registerVM);
     }
 
     [HttpPost]
