@@ -1,4 +1,5 @@
-﻿using LastFilm_Web_App.Models;
+﻿using LastFilm_Web_App.Data.Static;
+using LastFilm_Web_App.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LastFilm_Web_App.Data.Services;
@@ -12,13 +13,19 @@ public class OrdersService : IOrdersService
         _context = context;
     }
 
-    public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
+    public async Task<List<Order>> GetOrdersByUserIdAndRoleAsync(string userId, string userRole)
     {
         var orders = await _context.Orders
             .Include(i => i.OrderItems)
             .ThenInclude(m => m.Movie)
-            .Where(o => o.UserId == userId)
+            .Include(u => u.User)
             .ToListAsync();
+
+        if (userRole != UserRoles.Admin)
+        {
+            orders = orders.Where(n => n.UserId == userId).ToList();
+        }
+
         return orders;
     }
 

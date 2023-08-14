@@ -2,6 +2,7 @@
 using LastFilm_Web_App.Data.Services;
 using LastFilm_Web_App.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LastFilm_Web_App.Controllers;
 
@@ -60,8 +61,8 @@ public class OrdersController : Controller
     public async Task<ActionResult> CompleteOrder()
     {
         var items = _shoppingCart.GetShoppingCartItems();
-        string userId = "EmptyForNow";
-        string userEmail = "EmptyForNow2";
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        string userEmail = User.FindFirstValue(ClaimTypes.Email);
 
         await _ordersService.StoreOrderAsync(items, userId, userEmail);
         await _shoppingCart.ClearShoppingCartAsync();
@@ -71,7 +72,9 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var orders = await _ordersService.GetOrdersByUserIdAsync("EmptyForNow");
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        string userRole = User.FindFirstValue(ClaimTypes.Role);
+        var orders = await _ordersService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
         return View(orders);
     }
 }
