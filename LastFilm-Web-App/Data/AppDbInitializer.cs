@@ -1,13 +1,15 @@
 ﻿using LastFilm_Web_App.Data.Enums;
+using LastFilm_Web_App.Data.Static;
 using LastFilm_Web_App.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace LastFilm_Web_App.Data;
 
 public class AppDbInitializer
 {
-    public static void Seed(IApplicationBuilder applicationBuilder)
+    public static void Seed(IApplicationBuilder builder)
     {
-        using var serviceScope = applicationBuilder.ApplicationServices.CreateScope();
+        using var serviceScope = builder.ApplicationServices.CreateScope();
         var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
         context!.Database.EnsureCreated();
 
@@ -329,5 +331,62 @@ public class AppDbInitializer
         }
 
         #endregion
+    }
+
+    public static async Task SeedUsersAndRoles(IApplicationBuilder builder)
+    {
+        using var serviceScope = builder.ApplicationServices.CreateScope();
+        var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+        await SeedRoleAsync(roleManager, UserRoles.Admin);
+        await SeedRoleAsync(roleManager, UserRoles.User);
+
+        await SeedUserAsync(
+            userManager,
+            "admin@lastfilm.com",
+            "Admin User",
+            "admin",
+            "qwerty123!U",
+            UserRoles.Admin);
+
+        await SeedUserAsync(
+            userManager,
+            "user@lastfilm.com",
+            "Application User",
+            "appUser",
+            "qwerty123@!U",
+            UserRoles.User);
+    }
+
+    private static async Task SeedRoleAsync(RoleManager<IdentityRole> roleManager, string role)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    private static async Task SeedUserAsync(
+        UserManager<ApplicationUser> userManager,
+        string email,
+        string fullName,
+        string userName,
+        string password,
+        string role)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
+        {
+            var newUser = new ApplicationUser()
+            {
+                FullName = fullName,
+                UserName = userName,
+                Email = email,
+                EmailConfirmed = true,
+            };
+            await userManager.CreateAsync(newUser, password);
+            await userManager.AddToRoleAsync(newUser, role);
+        }
     }
 }
