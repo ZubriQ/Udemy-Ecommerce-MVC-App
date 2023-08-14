@@ -4,6 +4,7 @@ using LastFilm_Web_App.Data.ViewModels;
 using LastFilm_Web_App.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LastFilm_Web_App.Controllers;
 
@@ -21,6 +22,12 @@ public class AccountController : Controller
         _userManager = userManager;
         _signInManager = signInManager;
         _context = context;
+    }
+
+    public async Task<IActionResult> Users()
+    {
+        var users = await _context.Users.ToListAsync();
+        return View(users);
     }
 
     public IActionResult Login()

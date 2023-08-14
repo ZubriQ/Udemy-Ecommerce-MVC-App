@@ -24,9 +24,18 @@ else
         <ul class="dropdown-menu" aria-labelledby="profile-btn">
             <li>
                 <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
-                    <i class="bi bi-list"></i>Orders
+                    <i class="bi bi-list"></i> Orders
                 </a>
             </li>
+
+            @if (User.Identity.IsAuthenticated && User.IsInRole(UserRoles.Admin))
+            {
+                <li>
+                    <a class="dropdown-item" asp-controller="Account" asp-action="Users">
+                        <i class="bi bi-list"></i> Users
+                    </a>
+                </li>
+            }
         </ul>
     </div>
 
