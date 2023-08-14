@@ -57,5 +57,9 @@ public class AccountController : Controller
         return View(loginVM);
     }
 
-
+    public IActionResult Register()
+    {
+        var response = new RegisterVM();
+        return View(response);
+    }
 }
