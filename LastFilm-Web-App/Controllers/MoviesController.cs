@@ -32,7 +32,9 @@ public class MoviesController : Controller
         if (!string.IsNullOrEmpty(searchString))
         {
             var filteredMovies = movies
-                .Where(m => m.Name.Contains(searchString) || m.Description.Contains(searchString))
+                .Where(n =>
+                    n.Name.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    n.Description.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0)
                 .ToList();
 
             return View("Index", filteredMovies);
