@@ -1,11 +1,13 @@
 ﻿using LastFilm_Web_App.Data.Cart;
 using LastFilm_Web_App.Data.Services;
 using LastFilm_Web_App.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace LastFilm_Web_App.Controllers;
 
+[Authorize]
 public class OrdersController : Controller
 {
     private readonly IMoviesService _moviesService;

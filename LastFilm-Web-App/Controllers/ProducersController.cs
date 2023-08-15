@@ -1,9 +1,11 @@
 ﻿using LastFilm_Web_App.Data.Services;
 using LastFilm_Web_App.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LastFilm_Web_App.Controllers;
 
+[Authorize]
 public class ProducersController : Controller
 {
     private readonly IProducersService _service;
@@ -13,6 +15,7 @@ public class ProducersController : Controller
         _service = service;
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         var producers = await _service.GetAllAsync();
@@ -20,6 +23,7 @@ public class ProducersController : Controller
     }
 
     // GET: producers/details/1
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         if (await _service.GetByIdAsync(id) is Producer producer)

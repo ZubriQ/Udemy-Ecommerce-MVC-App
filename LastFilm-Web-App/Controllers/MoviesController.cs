@@ -1,10 +1,12 @@
 ﻿using LastFilm_Web_App.Data.Services;
 using LastFilm_Web_App.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LastFilm_Web_App.Controllers;
 
+[Authorize]
 public class MoviesController : Controller
 {
     private readonly IMoviesService _service;
@@ -14,12 +16,14 @@ public class MoviesController : Controller
         _service = service;
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         var movies = await _service.GetAllAsync(n => n.Cinema);
         return View(movies);
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Filter(string searchString)
     {
         var movies = await _service.GetAllAsync(n => n.Cinema);
@@ -37,6 +41,7 @@ public class MoviesController : Controller
     }
 
     // GET: movies/details/1
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int id)
     {
         var movie = await _service.GetMovieByIdAsync(id);
