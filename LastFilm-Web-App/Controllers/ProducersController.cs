@@ -1,11 +1,12 @@
 ﻿using LastFilm_Web_App.Data.Services;
+using LastFilm_Web_App.Data.Static;
 using LastFilm_Web_App.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LastFilm_Web_App.Controllers;
 
-[Authorize]
+[Authorize(Roles = UserRoles.Admin)]
 public class ProducersController : Controller
 {
     private readonly IProducersService _service;
